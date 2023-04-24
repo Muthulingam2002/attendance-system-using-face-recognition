@@ -1,94 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body{
-            background-color: rgb(255, 255, 255);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: #1F2039;
-
-        }
-        h1{
-              color: #A5B4FC;
-              text-transform: uppercase;
-              font-family: monospace;
-        }
-        table{
-            border-collapse: collapse;
-            color: rgb(22, 6, 6);
-        }
-        th{
-                            text-transform: uppercase;
-              font-family: monospace;
-        }
-        td{
-                text-transform: capitalize;
-              font-family: monospace;
-        }
-        th,td{
-            padding: 10px;
-     
-        }
-        table {
-  border-collapse: collapse;
-  width: 80%;
-  color: white;
-  margin: auto;
-}
-
-th,
-td {
-  padding: 20px;
-  text-align: center;
-  border: 1px solid #A5B4FC;
-}
-
-th {
-  font-size: 1.5em;
-  color: #A5B4FC;
-}
-
-td {
-  font-size: 1em;
-}
-    </style>
-</head>
-<body>
-    <h1>Automated Attendance</h1>
-    <table border="2">
-        <tr>
-            <th>Name</th>
-            <th>Time</th>
-        </tr>
-    </table>
-    <script>
-        const table=document.querySelector('table');
-        const xhr=new XMLHttpRequest();
-        xhr.open('GET','today.csv',true);
-        xhr.onload=function(){
-            if(this.status===200){
-                const rows=this.responseText.split('\n');
-                rows.forEach(row=>{
-                    const cols=row.split(',');
-                    const tr=document.createElement('tr');
-                    cols.forEach(col=>{
-                        const td=document.createElement('td');
-                        td.appendChild(document.createTextNode(col));
-                        tr.appendChild(td);
-                    });
-                    table.appendChild(tr);
-                });
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            body {
+                background-color: rgb(255, 255, 255);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: #1f2039;
             }
-        }
-        xhr.send();
+            h1 {
+                color: #a5b4fc;
+                text-transform: uppercase;
+                font-family: monospace;
+            }
+            table {
+                border-collapse: collapse;
+                color: rgb(22, 6, 6);
+            }
+            th {
+                text-transform: uppercase;
+                font-family: monospace;
+            }
+            td {
+                text-transform: capitalize;
+                font-family: monospace;
+            }
+            th,
+            td {
+                padding: 10px;
+            }
+            table {
+                border-collapse: collapse;
+                width: 80%;
+                color: white;
+                margin: auto;
+            }
 
-    </script>
-</body>
+            th,
+            td {
+                padding: 20px;
+                text-align: center;
+                border: 1px solid #a5b4fc;
+            }
+
+            th {
+                font-size: 1.5em;
+                color: #a5b4fc;
+            }
+
+            td {
+                font-size: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Automated Attendance</h1>
+        <table border="2">
+            <tr>
+                <th>Name</th>
+                <th>Time</th>
+            </tr>
+        </table>
+        <script>
+            const table = document.querySelector("table");
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "today.csv", true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    let rows = this.responseText.split("\n");
+                    console.log(rows);
+                    rows=rows.filter((row) => row.length != 0 && row!='\r');   
+                    rows.forEach((row) => {
+                        const cols = row.split(",");
+                        const tr = document.createElement("tr");
+                        cols.forEach((col) => {
+                            const td = document.createElement("td");
+                            td.appendChild(document.createTextNode(col));
+                            tr.appendChild(td);
+                        });
+                        table.appendChild(tr);
+                    });
+                }
+            };
+            xhr.send();
+        </script>
+    </body>
 </html>

@@ -2,8 +2,10 @@ import face_recognition
 import cv2
 import numpy as np
 import csv
+import psycopg2
 import os
 from datetime import datetime
+
 
 video_capture = cv2.VideoCapture(0)
 
@@ -43,8 +45,20 @@ s = True
 now = datetime.now()
 current_date = now.strftime("%Y-%m-%d")
 
-f = open(current_date + '.csv', 'w+', newline='')
+f = open('today.csv', 'w+', newline='')
 lnwriter = csv.writer(f)
+
+#
+# # Connect to the PostgreSQL database
+# conn = psycopg2.connect(
+#     database="mydatabase",
+#     user="postgres",
+#     password="kalam",
+#     host="localhost",
+#     port="5432"
+# )
+
+
 
 while True:
     _, frame = video_capture.read()
@@ -88,6 +102,27 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+
+
+
+# # Open a cursor to perform database operations
+# cur = conn.cursor()
+#
+# # Define the SQL statement to insert data into a table
+# sql = "INSERT INTO mytable ( name, time) VALUES ( %s, %s)"
+#
+# # Define the values to insert into the table
+# values = ('value2', 'value3')
+#
+# # Execute the SQL statement with the provided values
+# cur.execute(sql, values)
+#
+# # Commit the changes to the database
+# conn.commit()
+#
+# # Close the cursor and connection
+# cur.close()
+# conn.close()
 video_capture.release()
 cv2.destroyAllWindows()
 f.close()

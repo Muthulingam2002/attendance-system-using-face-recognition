@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        table{
+            border-collapse: collapse;
+            color: rgb(22, 6, 6);
+        }
+        th,td{
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Automated Attendance</h1>
+    <table border="2">
+        <tr>
+            <th>Name</th>
+            <th>Time</th>
+        </tr>
+    </table>
+    <script>
+        const table=document.querySelector('table');
+        const xhr=new XMLHttpRequest();
+        xhr.open('GET','today.csv',true);
+        xhr.onload=function(){
+            if(this.status===200){
+                const rows=this.responseText.split('\n');
+                rows.forEach(row=>{
+                    const cols=row.split(',');
+                    const tr=document.createElement('tr');
+                    cols.forEach(col=>{
+                        const td=document.createElement('td');
+                        td.appendChild(document.createTextNode(col));
+                        tr.appendChild(td);
+                    });
+                    table.appendChild(tr);
+                });
+            }
+        }
+        xhr.send();
+
+    </script>
+</body>
+</html>

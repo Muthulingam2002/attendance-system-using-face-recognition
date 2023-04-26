@@ -1,3 +1,5 @@
+# These are import statements in Python that import various libraries and modules that are required
+# for the code to run.
 import face_recognition
 import cv2
 import numpy as np
@@ -7,8 +9,14 @@ import os
 from datetime import datetime
 
 
+# `video_capture = cv2.VideoCapture(0)` is initializing a video capture object that captures video
+# from the default camera (index 0) of the device.
 video_capture = cv2.VideoCapture(0)
 
+# These lines of code are loading images of known faces from files and encoding them using the
+# `face_encodings()` function from the `face_recognition` library. The resulting encodings are stored
+# in variables named after the corresponding person's name. These encodings will be used later to
+# compare with the encodings of faces detected in the video stream to identify the people present.
 arron_image = face_recognition.load_image_file("photos/arron.jpg")
 arron_encoding = face_recognition.face_encodings(arron_image)[0]
 
@@ -24,6 +32,8 @@ assange_encoding = face_recognition.face_encodings(assange_image)[0]
 muthu_image = face_recognition.load_image_file("photos/muthu.jpg")
 muthu_encoding = face_recognition.face_encodings(muthu_image)[0]
 
+# `known_face_encoding` is a list of face encodings for known people, which are obtained by using the
+# `face_encodings()` function from the `face_recognition` library on their respective images.
 known_face_encoding = [
     arron_encoding,
     elon_encoding,
@@ -47,6 +57,7 @@ face_encodings = []
 face_names = []
 s = True
 
+# `now = datetime.now()` is creating a datetime object that represents the current date and time.
 now = datetime.now()
 current_date = now.strftime("%Y-%m-%d")
 
@@ -55,7 +66,6 @@ lnwriter = csv.writer(f)
 
 
 # Connect to the PostgreSQL database
-
 conn = psycopg2.connect(
     database="mydatabase",
     user="postgres",
@@ -66,6 +76,9 @@ conn = psycopg2.connect(
 
 
 
+# This is the main loop of the program that continuously captures frames from the video stream using
+# the `video_capture.read()` function. The captured frame is then resized to a smaller size using
+# `cv2.resize()` and converted to RGB format using `[:, :, ::-1]`.
 while True:
     _, frame = video_capture.read()
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -123,6 +136,11 @@ while True:
                     # Close the cursor and connection
                     cur.close()
                     conn.close()
+
+    # `cv2.imshow("attendence system", frame)` is displaying the current frame with the detected faces
+    # and their names using the OpenCV library. `cv2.waitKey(1) & 0xFF == ord('q')` waits for a key
+    # event for 1 millisecond and checks if the key pressed is 'q'. If the 'q' key is pressed, the
+    # loop is broken and the program exits.
     cv2.imshow("attendence system", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

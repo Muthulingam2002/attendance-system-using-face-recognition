@@ -1,10 +1,17 @@
+<!-- The code is an HTML document that creates a webpage with a table that displays data fetched from a
+server using JavaScript. It also includes some CSS styling to format the webpage. -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <title>FaceRecognition</title>
+        
+        <!-- The `<style>` tag is used to define the CSS styling for the HTML elements in the webpage. In
+        this code, it defines the background color, font family, padding, border, and font size for
+        the body, h1, table, th, and td elements. It also sets the width and margin for the table
+        element. -->
         <style>
             body {
                 background-color: rgb(255, 255, 255);
@@ -59,6 +66,13 @@
             }
         </style>
     </head>
+    <!-- The code is creating the body of an HTML document that includes a heading, a table with two
+    columns (Name and Time), and a script that fetches data from a server using JavaScript and
+    populates the table with the fetched data. The script uses the `fetch()` method to retrieve data
+    from the server and the `json()` method to parse the response as JSON. It then loops through the
+    data and generates HTML code for each row of the table using template literals. Finally, it
+    selects the table element using `querySelector()` and sets its `innerHTML` property to the
+    generated HTML code. -->
     <body>
         <h1>Automated Attendance</h1>
         <table border="2">

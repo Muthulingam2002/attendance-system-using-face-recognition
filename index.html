@@ -68,27 +68,30 @@
             </tr>
         </table>
         <script>
-            const table = document.querySelector("table");
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", "today.csv", true);
-            xhr.onload = function () {
-                if (this.status === 200) {
-                    let rows = this.responseText.split("\n");
-                    console.log(rows);
-                    rows=rows.filter((row) => row.length != 0 && row!='\r');   
-                    rows.forEach((row) => {
-                        const cols = row.split(",");
-                        const tr = document.createElement("tr");
-                        cols.forEach((col) => {
-                            const td = document.createElement("td");
-                            td.appendChild(document.createTextNode(col));
-                            tr.appendChild(td);
-                        });
-                        table.appendChild(tr);
-                    });
-                }
+            const get = async () => {
+                const data = await fetch("http://localhost:3000");
+                const d = await data.json();
+                console.log(d);
+                content = `
+            <tr>
+                <th>Name</th>
+                <th>Time</th>
+            </tr>
+            `;
+                d.forEach((e) => {
+                    console.log(e);
+                    content += `
+                <tr>
+                    <td>${e.name}</td>
+                <td>${e.time}</td>
+            </tr>
+                `;
+                });
+                const table = document.querySelector("table");
+                table.innerHTML = content;
             };
-            xhr.send();
+
+            get();
         </script>
     </body>
 </html>

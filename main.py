@@ -21,18 +21,23 @@ snowden_encoding = face_recognition.face_encodings(snowden_image)[0]
 assange_image = face_recognition.load_image_file("photos/assange.png")
 assange_encoding = face_recognition.face_encodings(assange_image)[0]
 
+muthu_image = face_recognition.load_image_file("photos/muthu.jpg")
+muthu_encoding = face_recognition.face_encodings(muthu_image)[0]
+
 known_face_encoding = [
     arron_encoding,
     elon_encoding,
     snowden_encoding,
-    assange_encoding
+    assange_encoding,
+    muthu_encoding
 ]
 
 known_faces_names = [
     "arron swartz",
     "elon musk",
     "edward snowden",
-    "jullian assange"
+    "jullian assange",
+    "muthulingam"
 ]
 
 students = known_faces_names.copy()
@@ -48,15 +53,16 @@ current_date = now.strftime("%Y-%m-%d")
 f = open('today.csv', 'w+', newline='')
 lnwriter = csv.writer(f)
 
-#
-# # Connect to the PostgreSQL database
-# conn = psycopg2.connect(
-#     database="mydatabase",
-#     user="postgres",
-#     password="kalam",
-#     host="localhost",
-#     port="5432"
-# )
+
+# Connect to the PostgreSQL database
+
+conn = psycopg2.connect(
+    database="mydatabase",
+    user="postgres",
+    password="kalam",
+    host="localhost",
+    port="5432"
+)
 
 
 
@@ -98,31 +104,29 @@ while True:
                     print(students)
                     current_time = now.strftime("%H:%M:%S")
                     lnwriter.writerow([name, current_time])
+
+                    # Open a cursor to perform database operations
+                    cur = conn.cursor()
+
+                    # Define the SQL statement to insert data into a table
+                    sql = "INSERT INTO mytable ( name, time,date) VALUES ( %s, %s,%s)"
+
+                    # Define the values to insert into the table
+                    values = (name, current_time,current_date)
+
+                    # Execute the SQL statement with the provided values
+                    cur.execute(sql, values)
+
+                    # Commit the changes to the database
+                    conn.commit()
+
+                    # Close the cursor and connection
+                    cur.close()
+                    conn.close()
     cv2.imshow("attendence system", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-
-
-
-# # Open a cursor to perform database operations
-# cur = conn.cursor()
-#
-# # Define the SQL statement to insert data into a table
-# sql = "INSERT INTO mytable ( name, time) VALUES ( %s, %s)"
-#
-# # Define the values to insert into the table
-# values = ('value2', 'value3')
-#
-# # Execute the SQL statement with the provided values
-# cur.execute(sql, values)
-#
-# # Commit the changes to the database
-# conn.commit()
-#
-# # Close the cursor and connection
-# cur.close()
-# conn.close()
 video_capture.release()
 cv2.destroyAllWindows()
 f.close()
